@@ -28,9 +28,12 @@ int main(int argc, char* args[])
 //        DFA_set_transition_all(xzy, i, -1);
 //    }
 
-    printf("hello");
-    DFA_free(xzy);
-    printf("hello");
+//    printf("hello\n");
+//    DFA_free(xzy);
+//    printf("hello hello\n");
+
+    DFA_execute(xzy, 'abc');
+    printf("fuck10\n");
 
     /*
     struct DFA abc;
