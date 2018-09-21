@@ -15,8 +15,9 @@ int main(int argc, char* args[])
 {
 
     DFA xzy = new_DFA(4);
-    printf("YO WHAT THE FUCK: %d", DFA_get_size(xzy));
+    printf("YO WHAT THE FUCK: %d.\n", DFA_get_size(xzy));
     DFA_set_accepting(xzy, 4, 1);
+    printf("accepted");
 
 
     //void DFA_set_transition(DFA dfa, int src, char sym, int dst)
@@ -28,7 +29,7 @@ int main(int argc, char* args[])
     }
 
     printf("hello");
-
+    DFA_free(xzy);
 
     /*
     struct DFA abc;

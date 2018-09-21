@@ -17,9 +17,11 @@
          int states;
  };
 DFA new_DFA(int nstates){
-    DFA newDFA = (DFA)malloc(sizeof(struct DFA));
+    struct DFA* newDFA = (struct DFA*)malloc(sizeof(struct DFA));
     newDFA->startState = 0; //was equal to 0
     newDFA->states = nstates;
+    newDFA->acceptingStates= (bool*)calloc(nstates,sizeof(bool));
+    newDFA->transition = (char**)calloc(128, sizeof(char));
     return newDFA;
 }
 
@@ -86,6 +88,7 @@ void DFA_set_transition_all(DFA dfa, int src, int dst) {
  * Set whether the given DFA's state is accepting or not.
  */
 void DFA_set_accepting(DFA dfa, int state, bool value) {
+   // printf("fucking accept");
     dfa->acceptingStates[state] = value;
 }
 
