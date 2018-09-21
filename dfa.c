@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include<stdlib.h>
+#include <string.h>
 #include "dfa.h"
 #include "LinkedList.h"
 
@@ -20,7 +21,7 @@ DFA new_DFA(int nstates){
     struct DFA* newDFA = (struct DFA*)malloc(sizeof(struct DFA));
     newDFA->startState = 0; //was equal to 0
     newDFA->states = nstates;
-    newDFA->acceptingStates= (bool*)calloc(nstates,sizeof(bool));
+    newDFA->acceptingStates= (bool*)calloc((size_t)nstates,sizeof(bool)); //I have no clue what (size_t) is but clion said to use it for signed values of type int
     newDFA->transition = (int**)malloc(128*sizeof(int*));
     for(int i=0; i<128; i++){
         newDFA->transition[i] = (int*)malloc(nstates* sizeof(int));
@@ -90,7 +91,7 @@ int DFA_get_transition(DFA dfa, int src, char sym) {
  * sym to be the state dst.
  */
 
-//not sure if debugged
+//debugged
 void DFA_set_transition(DFA dfa, int src, char sym, int dst) {
     int ascii = (int)sym;
     dfa->transition[src][ascii] = dst;
@@ -101,10 +102,13 @@ void DFA_set_transition(DFA dfa, int src, char sym, int dst) {
  * two states.
  */
 
-//not sure if debugged
+//debugged
 void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
-    for (char*t = str; *t != '\0'; t++) {
-        dfa->transition[src][(int)t] = dst;
+    printf("enter DFA_set_transition_str\n");
+    for (int t = 0; t < (signed)strlen(str); t++) {
+        char c = str[t];
+        printf("c: %c, c to int: %d\n", c, (int)c);
+        dfa->transition[src][(int)c] = dst;
     }
 }
 
