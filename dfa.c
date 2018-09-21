@@ -9,6 +9,12 @@
 /**
  * Allocate and return a new DFA containing the given number of states.
  */
+ struct DFA {
+         int startState;
+         int** transition;
+         bool* acceptingStates;
+         int* states;
+ };
 DFA new_DFA(int nstates){
     DFA newDFA;
     newDFA.startState = 0;
