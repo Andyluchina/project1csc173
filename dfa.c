@@ -17,6 +17,8 @@
          bool* acceptingStates;
          int states;
  };
+
+ //debugged
 DFA new_DFA(int nstates){
     struct DFA* newDFA = (struct DFA*)malloc(sizeof(struct DFA));
     newDFA->startState = 0; //was equal to 0
@@ -26,11 +28,11 @@ DFA new_DFA(int nstates){
     for(int i=0; i<128; i++){
         newDFA->transition[i] = (int*)malloc(nstates* sizeof(int));
     }
-    for(int i=0; i<128;i++){
-        for(int j=0; j<nstates; j++){
-            newDFA->transition[i][j]=-1;
-        }
+    for(int i = 0; i < 128; i++)
+    {
+        DFA_set_transition_all(newDFA, i, -1);
     }
+
     return newDFA;
 }
 
@@ -44,25 +46,18 @@ DFA new_DFA(int nstates){
 void DFA_free(DFA dfa) {
     for (int i = 0; i < 128; i++)
     {
-        printf("i: %d\n", i);
         int* currentIntPtr = dfa->transition[i];
         free(currentIntPtr);
     }
 
-    printf("fuck\n");
     free(dfa->transition);
-    printf("fuck1\n");
     dfa->transition = NULL;
-    printf("fuck2\n");
     dfa->acceptingStates = NULL;
     free(dfa->acceptingStates);
-    printf("fuck3\n");
     dfa->acceptingStates = NULL;
-    printf("fuck4\n");
     free(dfa);
-    printf("fuck5\n");
     dfa = NULL;
-    printf("fuck6\n");
+    printf("DFA_free done!");
 
 }
 
@@ -116,11 +111,14 @@ void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
  * Set the transitions of the given DFA for all input symbols.
  * Another shortcut method.
  */
-
+//src is the number of rows
 //not sure if debugged
 void DFA_set_transition_all(DFA dfa, int src, int dst) {
         for (int j = 0; j < dfa->states; j++) {
+
             dfa->transition[src][j] = dst;
+
+            //printf("[%d, %d] changed to %d\n", src,j,dst);
         }
 
 }

@@ -23,9 +23,9 @@ int main(int argc, char* args[])
     DFA_set_transition(xzy, 2, 'y', 3);
     printf("DFA_set_transition working\n");
     char* str = "xzy";
-    DFA_set_transition_str(xzy, 0, str, 1);
-    printf("DFA_set_transition_str \"working\"\n");
-
+//    DFA_set_transition_str(xzy, 0, str, 1);
+//    printf("DFA_set_transition_str \"working\"\n");
+    DFA_free(xzy);
     //void DFA_set_transition(DFA dfa, int src, char sym, int dst)
     //void DFA_set_transition_all(DFA dfa, int src, int dst)
 
