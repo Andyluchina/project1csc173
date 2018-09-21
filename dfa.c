@@ -26,10 +26,18 @@ DFA new_DFA(int nstates){
     newDFA->acceptingStates= (bool*)calloc((size_t)nstates,sizeof(bool)); //I have no clue what (size_t) is but clion said to use it for signed values of type int
     newDFA->transition = (int**)malloc(128*sizeof(int*));
     for(int i=0; i<128; i++){
-        newDFA->transition[i] = (int*)malloc(nstates* sizeof(int));
+        newDFA->transition[i] = (int*)malloc(nstates * sizeof(int));
     }
+//    for(int i = 0; i < 128; i++)
+//    {
+//        for(int j = 0; j < nstates; j++){
+//            newDFA->transition[i][j]=-1;
+//        }
+//    }
+
     for(int i = 0; i < 128; i++)
     {
+//        printf("new_DFA_i: %d\n", i);
         DFA_set_transition_all(newDFA, i, -1);
     }
 
@@ -42,22 +50,31 @@ DFA new_DFA(int nstates){
  * Free the given DFA.
  */
 
-//debugged
+//not really working... possible memory error? works occasionally but mostly doesn't
 void DFA_free(DFA dfa) {
+    printf("DFA_free entered\n");
     for (int i = 0; i < 128; i++)
     {
-        int* currentIntPtr = dfa->transition[i];
-        free(currentIntPtr);
+        printf("i: %d\n", i);
+       //s int* currentIntPtr = dfa->transition[i];
+        free(dfa->transition[i]);
+
     }
 
     free(dfa->transition);
+    printf("how\n");
     dfa->transition = NULL;
+    printf("did\n");
     dfa->acceptingStates = NULL;
+    printf("this\n");
     free(dfa->acceptingStates);
+    printf("fuck\n");
     dfa->acceptingStates = NULL;
+    printf("up\n");
     free(dfa);
+    printf("HUH?!?!?\n");
     dfa = NULL;
-    printf("DFA_free done!");
+    printf("DFA_free done!\n");
 
 }
 
@@ -112,7 +129,7 @@ void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
  * Another shortcut method.
  */
 //src is the number of rows
-//not sure if debugged
+//debugged
 void DFA_set_transition_all(DFA dfa, int src, int dst) {
         for (int j = 0; j < dfa->states; j++) {
 
@@ -130,13 +147,14 @@ void DFA_set_transition_all(DFA dfa, int src, int dst) {
 void DFA_set_accepting(DFA dfa, int state, bool value) {
    // printf("fucking accept");
     dfa->acceptingStates[state] = value;
+//    printf("as: %d", dfa->acceptingStates[state]);
 }
 
 /**
  * Return true if the given DFA's state is an accepting state.
  */
 
-//not sure if debugged
+//debugged
 bool DFA_get_accepting(DFA dfa, int state) {
     return dfa->acceptingStates[state];
 }
@@ -148,18 +166,17 @@ bool DFA_get_accepting(DFA dfa, int state) {
 
 //absolutely fucked
 bool DFA_execute(DFA dfa, char *input) {
-    printf("fuck7\n");
+    printf("*input: %s\n", input);
     int state = dfa->startState;
     printf("fuck8\n");
     char *t = input; //this line doesn't work. need to figure out how to read each character in the *input
-    printf("t: %s", t);
-    for (char *t = input; *t != '\0'; t++) {
-        printf("t: %s\n", t);
+    for (int t = 0; t < (signed) strlen(input); t++) {
+
         if(state == -1)
         {
            return false;
         }
-        state = dfa->transition[state][(int)t];
+        state = dfa->transition[state][(int)input[t]];
     }
     printf("fuck9\n");
     return DFA_get_accepting(dfa, state);

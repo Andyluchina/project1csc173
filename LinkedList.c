@@ -13,6 +13,7 @@
  * Structure for each element of a doubly-linked LinkedList.
  */
 typedef struct Node* Node;
+
 struct Node {
 	void *data;
 	Node next;
@@ -23,8 +24,8 @@ struct Node {
  * Linked list with first and last (head and tail) pointers.
  */
 struct LinkedList {
-	Node first;
-	Node last;
+Node first;
+Node last;
 };
 
 /**
