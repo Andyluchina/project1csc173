@@ -21,7 +21,11 @@ DFA new_DFA(int nstates){
     newDFA->startState = 0; //was equal to 0
     newDFA->states = nstates;
     newDFA->acceptingStates= (bool*)calloc(nstates,sizeof(bool));
-    newDFA->transition = (char**)calloc(128, sizeof(char));
+    newDFA->transition = (int**)malloc(128*sizeof(int*));
+    for(int i=0; i<128; i++){
+        newDFA->transition[i] = (int*)malloc(nstates* sizeof(int));
+    }
+
     return newDFA;
 }
 
