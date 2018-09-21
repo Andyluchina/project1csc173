@@ -15,8 +15,9 @@ int main(int argc, char* args[])
 {
 
     DFA xzy = new_DFA(4);
-    DFA_set_accepting(xzy, 4, 1);
     printf("YO WHAT THE FUCK: %d", DFA_get_size(xzy));
+    DFA_set_accepting(xzy, 4, 1);
+
 
     //void DFA_set_transition(DFA dfa, int src, char sym, int dst)
     //void DFA_set_transition_all(DFA dfa, int src, int dst)

@@ -29,16 +29,12 @@ DFA new_DFA(int nstates){
  * Free the given DFA.
  */
 void DFA_free(DFA dfa) {
-//    free(dfa->startState);
-//    dfa->startState = null;
-//    free(dfa->transition);
-//    dfa->transition = null;
-//    free(dfa->acceptingStates);
-//    dfa->acceptingStates = null;
-//    free(dfa->states);
-//    dfa->states = null;
-//    free(dfa);
-//    dfa = null;
+    free(dfa->transition);
+    dfa->transition = NULL;
+    free(dfa->acceptingStates);
+    dfa->acceptingStates = NULL;
+    free(dfa);
+    dfa = NULL;
 }
 
 /**

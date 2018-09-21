@@ -99,7 +99,7 @@ extern void *LinkedListIterator_next(LinkedListIterator iterator);
 
 /**
  * Print the given LinkedList to stdout, assuming that the values are
- * all null-terminated strings.
+ * all NULL-terminated strings.
  */
 extern void LinkedList_print_string_list(LinkedList this);
 

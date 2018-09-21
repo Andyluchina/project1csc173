@@ -227,7 +227,7 @@ void* LinkedListIterator_next(LinkedListIterator this) {
 
 /**
  * Print the given LinkedList to stdout, assuming that the values are
- * all null-terminated strings.
+ * all NULL-terminated strings.
  * Also prints a newline (because why not).
  */
 void LinkedList_print_string_list(LinkedList this) {
