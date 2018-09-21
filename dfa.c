@@ -2,6 +2,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include<stdlib.h>
 #include "dfa.h"
 #include "LinkedList.h"
 
@@ -13,11 +14,12 @@
          int startState;
          int** transition;
          bool* acceptingStates;
-         int* states;
+         int states;
  };
 DFA new_DFA(int nstates){
-    DFA newDFA;
-    newDFA.startState = 0;
+    DFA newDFA = (DFA)malloc(sizeof(struct DFA));
+    newDFA->startState = 0; //was equal to 0
+    newDFA->states = nstates;
     return newDFA;
 }
 
@@ -27,14 +29,23 @@ DFA new_DFA(int nstates){
  * Free the given DFA.
  */
 void DFA_free(DFA dfa) {
-
+//    free(dfa->startState);
+//    dfa->startState = null;
+//    free(dfa->transition);
+//    dfa->transition = null;
+//    free(dfa->acceptingStates);
+//    dfa->acceptingStates = null;
+//    free(dfa->states);
+//    dfa->states = null;
+//    free(dfa);
+//    dfa = null;
 }
 
 /**
  * Return the number of states in the given DFA.
  */
 int DFA_get_size(DFA dfa) {
-    return sizeof(dfa.states)/sizeof(int);
+    return dfa->states;
 }
 
 /**
@@ -43,7 +54,7 @@ int DFA_get_size(DFA dfa) {
  */
 int DFA_get_transition(DFA dfa, int src, char sym) {
     int ascii = (int)sym;
-    return dfa.transition[src][ascii];
+    return dfa->transition[src][ascii];
 }
 
 /**
@@ -52,7 +63,7 @@ int DFA_get_transition(DFA dfa, int src, char sym) {
  */
 void DFA_set_transition(DFA dfa, int src, char sym, int dst) {
     int ascii = (int)sym;
-    dfa.transition[src][ascii] = dst;
+    dfa->transition[src][ascii] = dst;
 }
 /**
  * Set the transitions of the given DFA for each symbol in the given str.
@@ -61,7 +72,7 @@ void DFA_set_transition(DFA dfa, int src, char sym, int dst) {
  */
 void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
     for (char*t = str; *t != '\0'; t++) {
-        dfa.transition[src][(int)t] = dst;
+        dfa->transition[src][(int)t] = dst;
     }
 }
 
@@ -70,24 +81,23 @@ void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
  * Another shortcut method.
  */
 void DFA_set_transition_all(DFA dfa, int src, int dst) {
-    for (int i = 0; i < dfa.states; i++) {
         for (int j = 0; j < 256; j++) {
-            dfa.transition[i][j] = dst;
+            dfa->transition[src][j] = dst;
         }
-    }
+
 }
 /**
  * Set whether the given DFA's state is accepting or not.
  */
 void DFA_set_accepting(DFA dfa, int state, bool value) {
-    dfa.acceptingStates[state] = value;
+    dfa->acceptingStates[state] = value;
 }
 
 /**
  * Return true if the given DFA's state is an accepting state.
  */
 bool DFA_get_accepting(DFA dfa, int state) {
-    return dfa.acceptingStates[state];
+    return dfa->acceptingStates[state];
 }
 
 /**
@@ -95,9 +105,13 @@ bool DFA_get_accepting(DFA dfa, int state) {
  * the input, otherwise false.
  */
 bool DFA_execute(DFA dfa, char *input) {
-    int state = dfa.startState;
-    for (char*t = input; *t != '\0'; t++) {
-        state = dfa.transition[state][(int)t];
+    int state = dfa->startState;
+    for (char *t = input; *t != '\0'; t++) {
+        if(state == -1)
+        {
+           return false;
+        }
+        state = dfa->transition[state][(int)t];
     }
     return DFA_get_accepting(dfa, state);
 }
@@ -106,3 +120,7 @@ bool DFA_execute(DFA dfa, char *input) {
  * Print the given DFA to System.out.
  */
 void DFA_print(DFA dfa);
+
+
+
+
