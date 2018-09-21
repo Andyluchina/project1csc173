@@ -25,7 +25,11 @@ DFA new_DFA(int nstates){
     for(int i=0; i<128; i++){
         newDFA->transition[i] = (int*)malloc(nstates* sizeof(int));
     }
-
+    for(int i=0; i<128;i++){
+        for(int j=0; j<nstates; j++){
+            newDFA->transition[i][j]=-1;
+        }
+    }
     return newDFA;
 }
 

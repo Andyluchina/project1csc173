@@ -23,13 +23,14 @@ int main(int argc, char* args[])
     //void DFA_set_transition(DFA dfa, int src, char sym, int dst)
     //void DFA_set_transition_all(DFA dfa, int src, int dst)
 
-    for(int i = 0; i < DFA_get_size(xzy) - 1; i++)
-    {
-        DFA_set_transition_all(xzy, i, -1);
-    }
+//    for(int i = 0; i < DFA_get_size(xzy) - 1; i++)
+//    {
+//        DFA_set_transition_all(xzy, i, -1);
+//    }
 
     printf("hello");
     DFA_free(xzy);
+    printf("hello");
 
     /*
     struct DFA abc;
