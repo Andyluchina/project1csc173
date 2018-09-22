@@ -168,16 +168,19 @@ bool DFA_execute(DFA dfa, char *input) {
     printf("*input: %s\n", input);
     int state = dfa->startState;
     printf("fuck8\n");
-    char *t = input; //this line doesn't work. need to figure out how to read each character in the *input
+//    char *t = input; //this line doesn't work. need to figure out how to read each character in the *input
     for (int t = 0; t < (signed) strlen(input); t++) {
 
+        printf("state: %d\n",state);
         if(state == -1)
         {
            return false;
         }
+
         state = dfa->transition[state][(int)input[t]];
     }
     printf("fuck9\n");
+    free(input);
     return DFA_get_accepting(dfa, state);
 }
 

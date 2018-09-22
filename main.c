@@ -31,7 +31,8 @@ int main(int argc, char* args[])
 
 //    printf("is state 3 accepting: %d\n", DFA_get_accepting(xzy,3));
 //    printf("is state 1 accepting: %d\n", DFA_get_accepting(xzy,1));
-
+    printf("bool: %d\n", DFA_execute(xzy, "abc"));
+    printf("bool: %d\n", DFA_execute(xzy, "xyz"));
 
    DFA_free(xzy);
 
@@ -49,8 +50,7 @@ int main(int argc, char* args[])
 //          DFA_free(xzy);
 //    printf("hello hello\n");
 
-    printf("bool: %d\n", DFA_execute(xzy, "abc"));
-    printf("bool: %d\n", DFA_execute(xzy, "xyz"));
+
 //    printf("bool: %d\n", DFA_execute(xzy, "xyzz"));
 
     /*
