@@ -99,7 +99,9 @@ int DFA_get_transition(DFA dfa, int src, char sym) {
 //debugged
 void DFA_set_transition(DFA dfa, int src, char sym, int dst) {
     int ascii = (int)sym;
-    dfa->transition[src][ascii] = dst;
+//    printf("before transfer: %d",dfa->transition[ascii][src]);
+    dfa->transition[ascii][src] = dst;
+//    printf("after transfer: %d",dfa->transition[ascii][src]);
 }
 /**
  * Set the transitions of the given DFA for each symbol in the given str.
@@ -171,15 +173,14 @@ bool DFA_execute(DFA dfa, char *input) {
         if(state == -1)
         {
             printf("fuck10\n");
-            free(input);
            return false;
         }
 
         state = dfa->transition[(int)input[t]][state];
         printf("after: %d\n",state);
     }
-    printf("fuck9\n");
-    free(input);
+   // printf("fuck9\n");
+    //free(input);
     return DFA_get_accepting(dfa, state);
 }
 

@@ -31,10 +31,24 @@ int main(int argc, char* args[])
 
 //    printf("is state 3 accepting: %d\n", DFA_get_accepting(xzy,3));
 //    printf("is state 1 accepting: %d\n", DFA_get_accepting(xzy,1));
-//    printf("bool: %d\n", DFA_execute(xzy, "abc"));
-    printf("bool: %d\n", DFA_execute(xzy, "xzy"));
+    //  printf("bool: %d\n", DFA_execute(xzy, "abc"));
 
-   DFA_free(xzy);
+      if(DFA_execute(xzy, "xzy")){
+          printf("xzy is accepted\n");
+      }else{
+          printf("xzy is rejected\n");
+      }
+     // printf("bool: %d\n", DFA_execute(xzy, "xzy"));
+
+     if(DFA_execute(xzy, "abc")){
+         printf("abc is accepted\n");
+     }else{
+         printf("abc is rejected\n");
+     }
+
+    //DFA_print(xzy);
+
+      DFA_free(xzy);
 
 
 //    printf("how does this make any sense");
