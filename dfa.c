@@ -170,6 +170,8 @@ bool DFA_execute(DFA dfa, char *input) {
         printf("num: %d\n", (int)input[t]);
         if(state == -1)
         {
+            printf("fuck10\n");
+            free(input);
            return false;
         }
 
