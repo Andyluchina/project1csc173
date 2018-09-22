@@ -27,12 +27,16 @@ NFA new_NFA(int nstates){
 /**
  * Free the given NFA.
  */
-extern void NFA_free(NFA nfa);
+void NFA_free(NFA nfa){
+
+}
 
 /**
  * Return the number of states in the given NFA.
  */
-extern int NFA_get_size(NFA nfa);
+int NFA_get_size(NFA nfa){
+
+}
 
 /**
  * Return the set of next states specified by the given NFA's transition
