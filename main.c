@@ -21,9 +21,9 @@ int main(int argc, char* args[])
 
     printf("accepted\n");
 
-//    DFA_set_transition(xzy, 0, 'x', 1);
-//    DFA_set_transition(xzy, 1, 'z', 2);
-//    DFA_set_transition(xzy, 2, 'y', 3);
+    DFA_set_transition(xzy, 0, 'x', 1);
+    DFA_set_transition(xzy, 1, 'z', 2);
+    DFA_set_transition(xzy, 2, 'y', 3);
 //    char* str = "xzy";
 //    DFA_set_transition_str(xzy, 0, str, 1);
 //    printf("DFA_set_transition_str \"working\"\n");
@@ -31,8 +31,8 @@ int main(int argc, char* args[])
 
 //    printf("is state 3 accepting: %d\n", DFA_get_accepting(xzy,3));
 //    printf("is state 1 accepting: %d\n", DFA_get_accepting(xzy,1));
-    printf("bool: %d\n", DFA_execute(xzy, "abc"));
-    printf("bool: %d\n", DFA_execute(xzy, "xyz"));
+//    printf("bool: %d\n", DFA_execute(xzy, "abc"));
+    printf("bool: %d\n", DFA_execute(xzy, "xzy"));
 
    DFA_free(xzy);
 

@@ -55,24 +55,18 @@ void DFA_free(DFA dfa) {
     printf("DFA_free entered\n");
     for (int i = 0; i < 128; i++)
     {
-        printf("i: %d\n", i);
+//        printf("i: %d\n", i);
        //s int* currentIntPtr = dfa->transition[i];
         free(dfa->transition[i]);
 
     }
 
     free(dfa->transition);
-    printf("how\n");
     dfa->transition = NULL;
-    printf("did\n");
     dfa->acceptingStates = NULL;
-    printf("this\n");
     free(dfa->acceptingStates);
-    printf("fuck\n");
     dfa->acceptingStates = NULL;
-    printf("up\n");
     free(dfa);
-    printf("HUH?!?!?\n");
     printf("DFA_free done!\n");
 
 }
@@ -172,12 +166,15 @@ bool DFA_execute(DFA dfa, char *input) {
     for (int t = 0; t < (signed) strlen(input); t++) {
 
         printf("state: %d\n",state);
+        printf("before: %c\n", input[t]);
+        printf("num: %d\n", (int)input[t]);
         if(state == -1)
         {
            return false;
         }
 
-        state = dfa->transition[state][(int)input[t]];
+        state = dfa->transition[(int)input[t]][state];
+        printf("after: %d\n",state);
     }
     printf("fuck9\n");
     free(input);
