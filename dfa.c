@@ -73,7 +73,6 @@ void DFA_free(DFA dfa) {
     printf("up\n");
     free(dfa);
     printf("HUH?!?!?\n");
-    dfa = NULL;
     printf("DFA_free done!\n");
 
 }
