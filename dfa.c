@@ -163,7 +163,7 @@ bool DFA_get_accepting(DFA dfa, int state) {
 bool DFA_execute(DFA dfa, char *input) {
     printf("*input: %s\n", input);
     int state = dfa->startState;
-    printf("fuck8\n");
+  //  printf("fuck8\n");
 //    char *t = input; //this line doesn't work. need to figure out how to read each character in the *input
     for (int t = 0; t < (signed) strlen(input); t++) {
 
@@ -172,7 +172,7 @@ bool DFA_execute(DFA dfa, char *input) {
         printf("num: %d\n", (int)input[t]);
         if(state == -1)
         {
-            printf("fuck10\n");
+           // printf("fuck10\n");
            return false;
         }
 
