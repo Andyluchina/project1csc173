@@ -13,7 +13,7 @@
 
 int main(int argc, char* args[])
 {
-
+    //DFA of exactly xzy
     DFA xzy = new_DFA(4);
     printf("YO WHAT THE FUCK: %d\n", DFA_get_size(xzy));
     DFA_set_accepting(xzy, 3, 1);
@@ -33,22 +33,45 @@ int main(int argc, char* args[])
 //    printf("is state 1 accepting: %d\n", DFA_get_accepting(xzy,1));
     //  printf("bool: %d\n", DFA_execute(xzy, "abc"));
 
-      if(DFA_execute(xzy, "xzy")){
-          printf("xzy is accepted\n");
-      }else{
-          printf("xzy is rejected\n");
-      }
-     // printf("bool: %d\n", DFA_execute(xzy, "xzy"));
 
-     if(DFA_execute(xzy, "abc")){
-         printf("abc is accepted\n");
-     }else{
-         printf("abc is rejected\n");
-     }
+//    DFA_print(xzy);
+//    if(DFA_execute(xzy, "xzy")){
+//        printf("xzy is accepted\n");
+//    }else{
+//        printf("xzy is rejected\n");
+//    }
+//    // printf("bool: %d\n", DFA_execute(xzy, "xzy"));
+//
+//    if(DFA_execute(xzy, "abc")){
+//        printf("abc is accepted\n");
+//    }else{
+//        printf("abc is rejected\n");
+//    }
 
     //DFA_print(xzy);
 
-      DFA_free(xzy);
+    DFA_free(xzy);
+
+    //DFA of any string starting with abc
+    DFA startingWithabc = new_DFA(4);
+    DFA_set_transition(startingWithabc, 0, 'a', 1);
+    DFA_set_transition(startingWithabc, 1, 'b', 2);
+    DFA_set_transition(startingWithabc, 2, 'c', 3);
+    DFA_set_transition_all(startingWithabc, 3, 3);
+    DFA_set_accepting(startingWithabc, 3, 1);
+    DFA_print(startingWithabc);
+    if(DFA_execute(startingWithabc, "abclkasdjflsadjlfijsadlfjalksdjlkdsajlkasla;ljas;lkj;lkadsfj;lkajf;lkadsjf;lkaj;lkfjsad;lkfja;dslfj")){
+        printf("abc is accepted\n");
+    }else{
+        printf("abc is rejected\n");
+    }
+
+
+    //DFA of binary input with an odd number of 0's
+    DFA oddZeros = new_DFA(2);
+
+    DFA_set_transition(oddZeros, 0, '1', 1);
+    
 
 
 //    printf("how does this make any sense");

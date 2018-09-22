@@ -28,18 +28,14 @@ DFA new_DFA(int nstates){
     for(int i=0; i<128; i++){
         newDFA->transition[i] = (int*)malloc(nstates * sizeof(int));
     }
-//    for(int i = 0; i < 128; i++)
-//    {
-//        for(int j = 0; j < nstates; j++){
-//            newDFA->transition[i][j]=-1;
-//        }
-//    }
-
     for(int i = 0; i < 128; i++)
     {
-//        printf("new_DFA_i: %d\n", i);
-        DFA_set_transition_all(newDFA, i, -1);
+        for(int j = 0; j < nstates; j++){
+            newDFA->transition[i][j]=-1;
+        }
     }
+
+
 
     return newDFA;
 }
@@ -50,9 +46,9 @@ DFA new_DFA(int nstates){
  * Free the given DFA.
  */
 
-//not really working... possible memory error? works occasionally but mostly doesn't
+//debugged
 void DFA_free(DFA dfa) {
-    printf("DFA_free entered\n");
+//    printf("DFA_free entered\n");
     for (int i = 0; i < 128; i++)
     {
 //        printf("i: %d\n", i);
@@ -67,7 +63,7 @@ void DFA_free(DFA dfa) {
     free(dfa->acceptingStates);
     dfa->acceptingStates = NULL;
     free(dfa);
-    printf("DFA_free done!\n");
+//    printf("DFA_free done!\n");
 
 }
 
@@ -88,7 +84,7 @@ int DFA_get_size(DFA dfa) {
 //debugged
 int DFA_get_transition(DFA dfa, int src, char sym) {
     int ascii = (int)sym;
-    return dfa->transition[src][ascii];
+    return dfa->transition[ascii][src];
 }
 
 /**
@@ -111,10 +107,10 @@ void DFA_set_transition(DFA dfa, int src, char sym, int dst) {
 
 //debugged
 void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
-    printf("enter DFA_set_transition_str\n");
+//    printf("enter DFA_set_transition_str\n");
     for (int t = 0; t < (signed)strlen(str); t++) {
         char c = str[t];
-        printf("c: %c, c to int: %d\n", c, (int)c);
+//        printf("c: %c, c to int: %d\n", c, (int)c);
         dfa->transition[src][(int)c] = dst;
     }
 }
@@ -126,11 +122,11 @@ void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
 //src is the number of rows
 //debugged
 void DFA_set_transition_all(DFA dfa, int src, int dst) {
-        for (int j = 0; j < dfa->states; j++) {
+        for (int j = 0; j < 128; j++) {
 
-            dfa->transition[src][j] = dst;
+            dfa->transition[j][src] = dst;
 
-            //printf("[%d, %d] changed to %d\n", src,j,dst);
+
         }
 
 }
@@ -161,15 +157,15 @@ bool DFA_get_accepting(DFA dfa, int state) {
 
 //absolutely fucked
 bool DFA_execute(DFA dfa, char *input) {
-    printf("*input: %s\n", input);
+//    printf("*input: %s\n", input);
     int state = dfa->startState;
   //  printf("fuck8\n");
-//    char *t = input; //this line doesn't work. need to figure out how to read each character in the *input
+
     for (int t = 0; t < (signed) strlen(input); t++) {
 
-        printf("state: %d\n",state);
-        printf("before: %c\n", input[t]);
-        printf("num: %d\n", (int)input[t]);
+//        printf("state: %d\n",state);
+//        printf("before: %c\n", input[t]);
+//        printf("num: %d\n", (int)input[t]);
         if(state == -1)
         {
            // printf("fuck10\n");
@@ -177,7 +173,7 @@ bool DFA_execute(DFA dfa, char *input) {
         }
 
         state = dfa->transition[(int)input[t]][state];
-        printf("after: %d\n",state);
+        //printf("after: %d\n",state);
     }
    // printf("fuck9\n");
     //free(input);
@@ -188,8 +184,34 @@ bool DFA_execute(DFA dfa, char *input) {
  * Print the given DFA to System.out.
  */
 
-//tbd
-void DFA_print(DFA dfa);
+//prints the number of states and the transitions
+void DFA_print(DFA dfa)
+{
+    printf("There are %d states in this DFA\n", dfa->states);
+    for(int i = 0; i < dfa->states; i++){
+        if(DFA_get_accepting(dfa, i))
+        {
+            printf("%d is an accepting state\n", i);
+        }
+    }
+    for(int r = 0; r < 128; r++)
+    {
+        for(int c = 0; c < dfa->states; c++)
+        {
+            if(dfa->transition[r][c] != -1)
+            {
+                if(c == dfa->states){
+                    printf("%c transitions %d to %d\n", (char) r, c, c);
+
+                }else
+                    {
+                        printf("%c transitions %d to %d\n", (char) r, c, c + 1);
+
+                    }
+            }
+        }
+    }
+}
 
 
 
