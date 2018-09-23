@@ -11,14 +11,14 @@
 /**
  * Allocate and return a new DFA containing the given number of states.
  */
- struct DFA {
-         int startState;
-         int** transition;
-         bool* acceptingStates;
-         int states;
- };
+struct DFA {
+    int startState;
+    int** transition;
+    bool* acceptingStates;
+    int states;
+};
 
- //debugged
+//debugged
 DFA new_DFA(int nstates){
     struct DFA* newDFA = (struct DFA*)malloc(sizeof(struct DFA));
     newDFA->startState = 0; //was equal to 0
@@ -48,11 +48,10 @@ DFA new_DFA(int nstates){
 
 //debugged
 void DFA_free(DFA dfa) {
-//    printf("DFA_free entered\n");
+
     for (int i = 0; i < 128; i++)
     {
-//        printf("i: %d\n", i);
-       //s int* currentIntPtr = dfa->transition[i];
+
         free(dfa->transition[i]);
 
     }
@@ -63,7 +62,6 @@ void DFA_free(DFA dfa) {
     free(dfa->acceptingStates);
     dfa->acceptingStates = NULL;
     free(dfa);
-//    printf("DFA_free done!\n");
 
 }
 
@@ -95,9 +93,8 @@ int DFA_get_transition(DFA dfa, int src, char sym) {
 //debugged
 void DFA_set_transition(DFA dfa, int src, char sym, int dst) {
     int ascii = (int)sym;
-//    printf("before transfer: %d",dfa->transition[ascii][src]);
     dfa->transition[ascii][src] = dst;
-//    printf("after transfer: %d",dfa->transition[ascii][src]);
+
 }
 /**
  * Set the transitions of the given DFA for each symbol in the given str.
@@ -107,10 +104,10 @@ void DFA_set_transition(DFA dfa, int src, char sym, int dst) {
 
 //debugged
 void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
-//    printf("enter DFA_set_transition_str\n");
+
     for (int t = 0; t < (signed)strlen(str); t++) {
         char c = str[t];
-//        printf("c: %c, c to int: %d\n", c, (int)c);
+
         dfa->transition[src][(int)c] = dst;
     }
 }
@@ -122,12 +119,12 @@ void DFA_set_transition_str(DFA dfa, int src, char *str, int dst) {
 //src is the number of rows
 //debugged
 void DFA_set_transition_all(DFA dfa, int src, int dst) {
-        for (int j = 0; j < 128; j++) {
+    for (int j = 0; j < 128; j++) {
 
-            dfa->transition[j][src] = dst;
+        dfa->transition[j][src] = dst;
 
 
-        }
+    }
 
 }
 /**
@@ -136,9 +133,8 @@ void DFA_set_transition_all(DFA dfa, int src, int dst) {
 
 //debugged
 void DFA_set_accepting(DFA dfa, int state, bool value) {
-   // printf("fucking accept");
+
     dfa->acceptingStates[state] = value;
-//    printf("as: %d", dfa->acceptingStates[state]);
 }
 
 /**
@@ -155,31 +151,28 @@ bool DFA_get_accepting(DFA dfa, int state) {
  * the input, otherwise false.
  */
 
-//absolutely fucked
+//debugged
 bool DFA_execute(DFA dfa, char *input) {
-//    printf("*input: %s\n", input);
+
     int state = dfa->startState;
-  //  printf("fuck8\n");
 
-    for (int t = 0; t < (signed) strlen(input); t++) {
 
-//        printf("state: %d\n",state);
-//        printf("before: %c\n", input[t]);
-//        printf("num: %d\n", (int)input[t]);
-        if(state == -1)
+    for (int t = 0; t < (signed) strlen(input); t++)
+    {
+
+
+        if (state == -1)
         {
-           // printf("fuck10\n");
-           return false;
+
+            return false;
         }
 
-        state = dfa->transition[(int)input[t]][state];
-        //printf("after: %d\n",state);
+        state = dfa->transition[(int) input[t]][state];
+
+
     }
-   // printf("fuck9\n");
-    //free(input);
     return DFA_get_accepting(dfa, state);
 }
-
 /**
  * Print the given DFA to System.out.
  */
@@ -188,26 +181,24 @@ bool DFA_execute(DFA dfa, char *input) {
 void DFA_print(DFA dfa)
 {
     printf("There are %d states in this DFA\n", dfa->states);
-    for(int i = 0; i < dfa->states; i++){
-        if(DFA_get_accepting(dfa, i))
+    for (int i = 0; i < dfa->states; i++)
+    {
+        if (DFA_get_accepting(dfa, i))
         {
             printf("%d is an accepting state\n", i);
         }
     }
-    for(int r = 0; r < 128; r++)
+    for (int r = 0; r < 128; r++)
     {
-        for(int c = 0; c < dfa->states; c++)
+        for (int c = 0; c < dfa->states; c++)
         {
-            if(dfa->transition[r][c] != -1)
+            if (dfa->transition[r][c] != -1)
             {
-                if(c == dfa->states){
-                    printf("%c transitions %d to %d\n", (char) r, c, c);
 
-                }else
-                    {
-                        printf("%c transitions %d to %d\n", (char) r, c, c + 1);
 
-                    }
+                printf("'%c' transitions state %d to state %d\n", (char) r, c, dfa->transition[r][c]);
+
+
             }
         }
     }

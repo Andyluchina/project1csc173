@@ -1,54 +1,42 @@
 #include <stdio.h>
+#include <string.h>
 #include "dfa.h"
 #include "nfa.h"
 
 
+int main(int argc, char* args[]) {
+    char *input = "";
+    bool result;
 
-//int startState;
-//int transition[30][256];
-//bool acceptingStates[20];
-//int states[30];
-
-
-
-int main(int argc, char* args[])
-{
     //DFA of exactly xzy
     DFA xzy = new_DFA(4);
-    printf("YO WHAT THE FUCK: %d\n", DFA_get_size(xzy));
     DFA_set_accepting(xzy, 3, 1);
-//    size_t size_acceptingStates = sizeof(xzy->acceptingStates)/(xzy->acceptingStates[0]);
-
-    printf("accepted\n");
-
     DFA_set_transition(xzy, 0, 'x', 1);
     DFA_set_transition(xzy, 1, 'z', 2);
     DFA_set_transition(xzy, 2, 'y', 3);
-//    char* str = "xzy";
-//    DFA_set_transition_str(xzy, 0, str, 1);
-//    printf("DFA_set_transition_str \"working\"\n");
+    printf("Testing DFA that recognizes exactly \"xzy\"\n");
+    while(input != "quit")
+    {
+        printf("Enter an input (\"quit\" to quit): ");
+        fgets(input, 100, stdin);
+        if(input == "quit"){
+            break;
+        }
+        size_t ln = strlen(input)-1;
+        if (input[ln] == '\n')
+            input[ln] = '\0';
 
+        result = DFA_execute(xzy, input);
 
-//    printf("is state 3 accepting: %d\n", DFA_get_accepting(xzy,3));
-//    printf("is state 1 accepting: %d\n", DFA_get_accepting(xzy,1));
-    //  printf("bool: %d\n", DFA_execute(xzy, "abc"));
+        if(result)
+        {
+            printf("Result for input \"%s\": true\n", input);
+        }else
+        {
+            printf("Result for input \"%s\": false\n", input);
+        }
 
-
-//    DFA_print(xzy);
-//    if(DFA_execute(xzy, "xzy")){
-//        printf("xzy is accepted\n");
-//    }else{
-//        printf("xzy is rejected\n");
-//    }
-//    // printf("bool: %d\n", DFA_execute(xzy, "xzy"));
-//
-//    if(DFA_execute(xzy, "abc")){
-//        printf("abc is accepted\n");
-//    }else{
-//        printf("abc is rejected\n");
-//    }
-
-    //DFA_print(xzy);
+    }
 
     DFA_free(xzy);
 
@@ -60,38 +48,44 @@ int main(int argc, char* args[])
     DFA_set_transition_all(startingWithabc, 3, 3);
     DFA_set_accepting(startingWithabc, 3, 1);
     DFA_print(startingWithabc);
-    if(DFA_execute(startingWithabc, "abclkasdjflsadjlfijsadlfjalksdjlkdsajlkasla;ljas;lkj;lkadsfj;lkajf;lkadsjf;lkaj;lkfjsad;lkfja;dslfj")){
-        printf("abc is accepted\n");
-    }else{
-        printf("abc is rejected\n");
-    }
 
 
     //DFA of binary input with an odd number of 0's
     DFA oddZeros = new_DFA(2);
-
-    DFA_set_transition(oddZeros, 0, '1', 1);
-    
-
-
-//    printf("how does this make any sense");
-    //void DFA_set_transition(DFA dfa, int src, char sym, int dst)
-    //void DFA_set_transition_all(DFA dfa, int src, int dst)
-
-//    for(int i = 0; i < DFA_get_size(xzy) - 1; i++)
-//    {
-//        DFA_set_transition_all(xzy, i, -1);
-//    }
-
-//    printf("hello\n");
-//          DFA_free(xzy);
-//    printf("hello hello\n");
+    DFA_set_transition(oddZeros, 0, '0', 1);
+    DFA_set_transition(oddZeros, 0, '1', 0);
+    DFA_set_transition(oddZeros, 1, '0', 0);
+    DFA_set_transition(oddZeros, 1, '1', 1);
+    DFA_set_accepting(oddZeros, 1, 1);
+    DFA_print(oddZeros);
 
 
-//    printf("bool: %d\n", DFA_execute(xzy, "xyzz"));
+    //DFA of binary input with an odd number of 0's and 1's
+    DFA oddZerosAndOnes = new_DFA(5);
+    DFA_set_transition(oddZerosAndOnes, 0, '1', 1);
+    DFA_set_transition(oddZerosAndOnes, 1, '1', 0);
+    DFA_set_transition(oddZerosAndOnes, 1, '0', 3);
+    DFA_set_transition(oddZerosAndOnes, 3, '0', 1);
+    DFA_set_transition(oddZerosAndOnes, 0, '0', 2);
+    DFA_set_transition(oddZerosAndOnes, 2, '0', 0);
+    DFA_set_transition(oddZerosAndOnes, 2, '1', 4);
+    DFA_set_transition(oddZerosAndOnes, 4, '1', 2);
+    DFA_set_transition(oddZerosAndOnes, 4, '0', 1);
+    DFA_set_transition(oddZerosAndOnes, 3, '1', 2);
+    DFA_set_accepting(oddZerosAndOnes, 3, 1);
+    DFA_set_accepting(oddZerosAndOnes, 4, 1);
+    DFA_print(oddZerosAndOnes);
 
-    /*
-    struct DFA abc;
-    abc.states = { 0,1,2,3 };
-    abc.startState= 2*/
+
+    //DFA containing the string "ing"
+    DFA containingING = new_DFA(4);
+    DFA_set_accepting(containingING, 3, 1);
+    DFA_set_transition_all(containingING, 0, 0);
+    DFA_set_transition(containingING, 0, 'i', 1);
+    DFA_set_transition(containingING, 1, 'n', 2);
+    DFA_set_transition(containingING, 2, 'g', 3);
+    DFA_set_transition_all(containingING, 3, 3);
+    DFA_print(containingING);
+
+
 }
