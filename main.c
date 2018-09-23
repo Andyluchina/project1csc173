@@ -3,14 +3,6 @@
 #include "nfa.h"
 
 
-
-//int startState;
-//int transition[30][256];
-//bool acceptingStates[20];
-//int states[30];
-
-
-
 int main(int argc, char* args[])
 {
     //DFA of exactly xzy
@@ -48,7 +40,7 @@ int main(int argc, char* args[])
 //        printf("abc is rejected\n");
 //    }
 
-    //DFA_print(xzy);
+    DFA_print(xzy);
 
     DFA_free(xzy);
 

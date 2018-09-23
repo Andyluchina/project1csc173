@@ -155,28 +155,16 @@ bool DFA_get_accepting(DFA dfa, int state) {
  * the input, otherwise false.
  */
 
-//absolutely fucked
 bool DFA_execute(DFA dfa, char *input) {
-//    printf("*input: %s\n", input);
     int state = dfa->startState;
-  //  printf("fuck8\n");
-
     for (int t = 0; t < (signed) strlen(input); t++) {
-
-//        printf("state: %d\n",state);
-//        printf("before: %c\n", input[t]);
-//        printf("num: %d\n", (int)input[t]);
         if(state == -1)
         {
-           // printf("fuck10\n");
            return false;
         }
 
         state = dfa->transition[(int)input[t]][state];
-        //printf("after: %d\n",state);
     }
-   // printf("fuck9\n");
-    //free(input);
     return DFA_get_accepting(dfa, state);
 }
 
