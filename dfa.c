@@ -19,7 +19,7 @@
  };
 
  //debugged
-DFA new_DFA(int nstates){
+DFA new_DFA(int nstates) {
     struct DFA* newDFA = (struct DFA*)malloc(sizeof(struct DFA));
     newDFA->startState = 0; //was equal to 0
     newDFA->states = nstates;
