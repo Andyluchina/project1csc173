@@ -31,7 +31,7 @@ NFA new_NFA(int nstates) {
  * Free the given NFA.
  */
 void NFA_free(NFA nfa){
-
+//freedom
     for(int i=0; i<128; i++){
         free(nfa->transition[i]);
     }
