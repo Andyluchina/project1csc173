@@ -10,6 +10,7 @@
 
 #include <stdbool.h>
 #include "Set.h"
+#include "BitSet.h"
 
 /**
  * The data structure used to represent a nondeterministic finite automaton.
@@ -37,7 +38,7 @@ extern int NFA_get_size(NFA nfa);
  * Return the set of next states specified by the given NFA's transition
  * function from the given state on input symbol sym.
  */
-extern Set NFA_get_transitions(NFA nfa, int state, char sym);
+extern BitSet NFA_get_transitions(NFA nfa, int state, char sym);
 
 /**
  * For the given NFA, add the state dst to the set of next states from
@@ -70,6 +71,12 @@ extern bool NFA_get_accepting(NFA nfa, int state);
  * the input, otherwise false.
  */
 extern bool NFA_execute(NFA nfa, char *input);
+
+/**
+ * Helper method to recursively ged possible states
+ */
+extern BitSet get_possible_states(NFA nfa, char* input, BitSet currentStates);
+
 
 /**
  * Print the given NFA to System.out.
