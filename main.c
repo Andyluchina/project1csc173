@@ -7,6 +7,29 @@
 int main(int argc, char* args[]) {
     char* input = "";
     bool result;
+    
+//    NFA ending with "car"
+//    NFA car = new_NFA(4);
+//    NFA_print(car);
+//    NFA_set_accepting(car, 3, true);
+//
+//    NFA_add_transition_all(car, 0, 0);
+//    NFA_add_transition_all(car, 1, 0);
+//    NFA_add_transition_all(car, 2, 0);
+//    NFA_add_transition_all(car, 3, 0);
+//
+//    NFA_add_transition(car, 0, 'c', 1);
+//    NFA_add_transition(car, 1, 'a', 2);
+//    NFA_add_transition(car, 2, 'r', 3);
+//    printf("Testing NFA that recognizes strings ending in \"car\"\n");
+//    result = NFA_execute(car, "carcar");
+//    if(result){
+//        printf("true \n");
+//    }
+//    else{
+//        printf("false \n");
+//    }
+
 
     //DFA of exactly xzy
     DFA xzy = new_DFA(4);

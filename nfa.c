@@ -44,11 +44,18 @@ NFA new_NFA(int nstates) {
  */
 void NFA_free(NFA nfa){
 //freedom
+//    for(int i = 0; i<=128; i++){
+//        for(int j = 0; j<nfa->states; j++ ){
+//            IntHashSet_free(nfa->transition[i][j]);
+//        }
+//    }
     for(int i=0; i<128; i++){
         free(nfa->transition[i]);
     }
     free(nfa->transition);
+    nfa->transition = NULL;
     free(nfa->acceptingStates);
+    nfa->acceptingStates = NULL;
     free(nfa);
 //    for (int i = 0; i < 128; i++)
 //    {
@@ -130,15 +137,18 @@ bool NFA_execute(NFA nfa, char *input){
     IntHashSetIterator it = IntHashSet_iterator(possible);
     while(IntHashSetIterator_hasNext(it)) {
         if (NFA_get_accepting(nfa, IntHashSetIterator_next(it))){
+            IntHashSet_free(possible);
             return true;
         }
     }
+    IntHashSet_free(possible);
     return false;
 }
 
 
 IntHashSet get_possible_states(NFA nfa, char* input, IntHashSet currentStates){
     if((input == NULL) || (input[0] == '\0')){
+        free(input);
         return currentStates;
     }
     IntHashSet possible = new_IntHashSet(nfa->states);
@@ -148,7 +158,22 @@ IntHashSet get_possible_states(NFA nfa, char* input, IntHashSet currentStates){
         int state = IntHashSetIterator_next(it);
         IntHashSet_union(possible, nfa->transition[character][state]);
     }
+    free(it);
+    IntHashSet_free(currentStates);
     return get_possible_states(nfa, input+1, possible);
+}
+
+IntHashSet get_possible_statesFromChar(NFA nfa, char input, IntHashSet currentStates){
+    IntHashSet possible = new_IntHashSet(nfa->states);
+    IntHashSetIterator it = IntHashSet_iterator(currentStates);
+    while(IntHashSetIterator_hasNext(it)) {
+        int character = (int) input;
+        int state = IntHashSetIterator_next(it);
+        possible =  nfa->transition[character][state];
+    }
+    free(it);
+    IntHashSet_free(currentStates);
+    return possible;
 }
 
 /**

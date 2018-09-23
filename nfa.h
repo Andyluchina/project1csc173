@@ -77,6 +77,9 @@ extern bool NFA_execute(NFA nfa, char *input);
  */
 extern IntHashSet get_possible_states(NFA nfa, char* input, IntHashSet currentStates);
 
+extern IntHashSet get_possible_statesFromChar(NFA nfa, char input, IntHashSet currentStates);
+
+
 
 /**
  * Print the given NFA to System.out.
