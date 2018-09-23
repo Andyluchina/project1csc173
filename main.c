@@ -5,7 +5,7 @@
 
 
 int main(int argc, char* args[]) {
-    char *input = "";
+    char* input = "";
     bool result;
 
     //DFA of exactly xzy
@@ -19,13 +19,7 @@ int main(int argc, char* args[]) {
     {
         printf("Enter an input (\"quit\" to quit): ");
         fgets(input, 100, stdin);
-        if(input == "quit"){
-            break;
-        }
-        size_t ln = strlen(input)-1;
-        if (input[ln] == '\n')
-            input[ln] = '\0';
-
+//        input[strcspn(input, "\n")] = 0;
         result = DFA_execute(xzy, input);
 
         if(result)
