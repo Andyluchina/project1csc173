@@ -8,52 +8,6 @@ int main(int argc, char* args[]) {
     char* input = "";
     bool result;
 
-    //NFA ending with "car"
-    NFA car = new_NFA(4);
-    NFA_print(car);
-    NFA_set_accepting(car, 3, true);
-
-    NFA_add_transition_all(car, 0, 0);
-    NFA_add_transition_all(car, 1, 0);
-    NFA_add_transition_all(car, 2, 0);
-    NFA_add_transition_all(car, 3, 0);
-
-    NFA_add_transition(car, 0, 'c', 1);
-    NFA_add_transition(car, 1, 'a', 2);
-    NFA_add_transition(car, 2, 'r', 3);
-    printf("Testing NFA that recognizes strings ending in \"car\"\n");
-    result = NFA_execute(car, "carcar");
-    if(result){
-        printf("true \n");
-    }
-    else{
-        printf("false \n");
-    }
-
-//    while(strcmp(input, "quit") != 0)
-//    {
-//        printf("Enter an input to test NFA's ending with car (\"quit\" to quit): ");
-//        fgets(input, 100, stdin);
-//
-//        if(strcmp(input, "quit") == 0)
-//        {
-//            break;
-//        }
-//        input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
-//        if(result)
-//        {
-//            printf("Result for input \"%s\": true\n", input);
-//        }else
-//        {
-//            printf("Result for input \"%s\": false\n", input);
-//        }
-//
-//    }
-    NFA_free(car);
-
-
-
-
     //DFA of exactly xzy
     DFA xzy = new_DFA(4);
     DFA_set_accepting(xzy, 3, 1);
@@ -61,7 +15,6 @@ int main(int argc, char* args[]) {
     DFA_set_transition(xzy, 1, 'z', 2);
     DFA_set_transition(xzy, 2, 'y', 3);
     printf("Testing DFA that recognizes exactly \"xzy\"\n");
-    result = DFA_execute(xzy, "test");
 
     while(strcmp(input, "quit") != 0)
     {
