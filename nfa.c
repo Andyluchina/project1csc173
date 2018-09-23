@@ -5,12 +5,12 @@
 #include <string.h>
 #include "LinkedList.h"
 #include "nfa.h"
-#include "BitSet.h"
+#include "IntHashSet.h"
 #include "Set.h"
 
 struct NFA{
     int startState;
-    BitSet** transition;
+    IntHashSet** transition;
     bool* acceptingStates;
     int states;
 };
@@ -26,14 +26,14 @@ NFA new_NFA(int nstates) {
     for(int i=0; i< sizeof(newNFA->acceptingStates)/nstates; i++){
         newNFA->acceptingStates[i]=false;
     }
-    newNFA->transition = (struct BitSet **) malloc(128 * sizeof(BitSet *));
+    newNFA->transition = (IntHashSet **) malloc(128 * sizeof(IntHashSet *));
     for (int i = 0; i < 128; i++) {
-        newNFA->transition[i] = (BitSet *) malloc(nstates * sizeof(BitSet));
+        newNFA->transition[i] = (IntHashSet *) malloc(nstates * sizeof(IntHashSet));
     }
 
     for(int i=0; i<128; i++){
         for(int j=0; j<nstates; j++){
-            newNFA->transition[i][j] =new_BitSet();
+            newNFA->transition[i][j] =new_IntHashSet(newNFA->states);
         }
     }
 
@@ -73,7 +73,7 @@ int NFA_get_size(NFA nfa){
  * Return the set of next states specified by the given NFA's transition
  * function from the given state on input symbol sym.
  */
-BitSet NFA_get_transitions(NFA nfa, int state, char sym){
+IntHashSet NFA_get_transitions(NFA nfa, int state, char sym){
     return nfa->transition[(int)sym][state];
 }
 
@@ -82,7 +82,9 @@ BitSet NFA_get_transitions(NFA nfa, int state, char sym){
  * state src on input symbol sym.
  */
 void NFA_add_transition(NFA nfa, int src, char sym, int dst){
-    BitSet_insert(nfa->transition[(int)sym][src],dst);
+    printf("%s \n", IntHashSet_toString(nfa->transition[(int)sym][src]));
+    IntHashSet_insert((nfa->transition[(int)sym][src]), dst);
+    printf("%s \n", IntHashSet_toString(nfa->transition[(int)sym][src]));
 }
 
 /**
@@ -99,7 +101,7 @@ void NFA_add_transition_str(NFA nfa, int src, char *str, int dst){
  */
 void NFA_add_transition_all(NFA nfa, int src, int dst){
     for(int i=0; i<128; i++){
-        BitSet_insert(nfa->transition[i][src],dst);
+        IntHashSet_insert(nfa->transition[i][src],dst);
     }
 }
 
@@ -122,12 +124,12 @@ bool NFA_get_accepting(NFA nfa, int state){
  * the input, otherwise false.
  */
 bool NFA_execute(NFA nfa, char *input){
-    BitSet possible = new_BitSet();
-    BitSet_insert(possible, nfa->startState);
+    IntHashSet possible = new_IntHashSet(nfa->states);
+    IntHashSet_insert(possible, nfa->startState);
     possible = get_possible_states(nfa, input, possible);
-    BitSetIterator it = BitSet_iterator(possible);
-    while(BitSetIterator_hasNext(it)) {
-        if (NFA_get_accepting(nfa, BitSetIterator_next(it))){
+    IntHashSetIterator it = IntHashSet_iterator(possible);
+    while(IntHashSetIterator_hasNext(it)) {
+        if (NFA_get_accepting(nfa, IntHashSetIterator_next(it))){
             return true;
         }
     }
@@ -135,16 +137,16 @@ bool NFA_execute(NFA nfa, char *input){
 }
 
 
-BitSet get_possible_states(NFA nfa, char* input, BitSet currentStates){
-    if((input != NULL) && (input[0] == '\0')){
+IntHashSet get_possible_states(NFA nfa, char* input, IntHashSet currentStates){
+    if((input == NULL) || (input[0] == '\0')){
         return currentStates;
     }
-    BitSet possible = new_BitSet();
-    BitSetIterator it = BitSet_iterator(currentStates);
-    while(BitSetIterator_hasNext(it)) {
+    IntHashSet possible = new_IntHashSet(nfa->states);
+    IntHashSetIterator it = IntHashSet_iterator(currentStates);
+    while(IntHashSetIterator_hasNext(it)) {
         int character = (int) input[0];
-        int state = BitSetIterator_next(it);
-        BitSet_union(possible, nfa->transition[character][state]);
+        int state = IntHashSetIterator_next(it);
+        IntHashSet_union(possible, nfa->transition[character][state]);
     }
     return get_possible_states(nfa, input+1, possible);
 }
@@ -153,7 +155,37 @@ BitSet get_possible_states(NFA nfa, char* input, BitSet currentStates){
  * Print the given NFA to System.out.
  */
 void NFA_print(NFA nfa){
+    printf("There are %d states in this NFA\n", nfa->states);
+    for(int i = 0; i < nfa->states; i++){
+        if(nfa->acceptingStates[i])
+            printf("%d is an accepting state\n", i);
 
+    }
+
+    for(int i = 0; i < 128; i++)
+    {
+        for(int j = 0; j < nfa->states; j++)
+        {
+            IntHashSetIterator it = IntHashSet_iterator(nfa->transition[i][j]);
+            while(IntHashSetIterator_hasNext(it)) {
+                int state = IntHashSetIterator_next(it);
+                printf("%c transition %d to %d\n", (char)i, j, state);
+
+            }
+
+//            if(dfa->transition[r][c] != -1)
+//            {
+//                if(c == dfa->states){
+//                    printf("%c transitions %d to %d\n", (char) r, c, c);
+//
+//                }else
+//                {
+//                    printf("%c transitions %d to %d\n", (char) r, c, c + 1);
+//
+//                }
+//            }
+        }
+    }
 }
 
 

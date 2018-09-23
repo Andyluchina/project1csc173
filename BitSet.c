@@ -65,6 +65,7 @@ void BitSet_insert(BitSet set, int element) {
 		fprintf(stderr, "BitSet_insert: element out of range: %d\n", element);
 		abort();
 	}
+	printf("%d \n", element);
 	set->bits |= (1L << element);
 }
 
