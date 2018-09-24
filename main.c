@@ -9,7 +9,7 @@ int main(int argc, char* args[]) {
     bool result;
     
 //    NFA ending with "car"
-
+//How
     NFA car = new_NFA(4);
 //
     NFA_set_accepting(car, 3, true);
