@@ -9,26 +9,34 @@ int main(int argc, char* args[]) {
     bool result;
     
 //    NFA ending with "car"
-//    NFA car = new_NFA(4);
-//    NFA_print(car);
-//    NFA_set_accepting(car, 3, true);
+
+    NFA car = new_NFA(4);
 //
-//    NFA_add_transition_all(car, 0, 0);
-//    NFA_add_transition_all(car, 1, 0);
-//    NFA_add_transition_all(car, 2, 0);
-//    NFA_add_transition_all(car, 3, 0);
-//
-//    NFA_add_transition(car, 0, 'c', 1);
-//    NFA_add_transition(car, 1, 'a', 2);
-//    NFA_add_transition(car, 2, 'r', 3);
-//    printf("Testing NFA that recognizes strings ending in \"car\"\n");
-//    result = NFA_execute(car, "carcar");
-//    if(result){
-//        printf("true \n");
-//    }
-//    else{
-//        printf("false \n");
-//    }
+    NFA_set_accepting(car, 3, true);
+    NFA_add_transition(car, 0, 'c', 1);
+    NFA_add_transition(car, 1, 'a', 2);
+    NFA_add_transition(car, 2, 'r', 3);
+
+    NFA_add_transition_all(car, 0, 0);
+    NFA_add_transition_all(car, 1, 0);
+    NFA_add_transition_all(car, 2, 0);
+    NFA_add_transition_all(car, 3, 0);
+    NFA_print(car);
+
+    printf("Testing NFA that recognizes strings ending in \"car\"\n");
+    result = NFA_execute(car, "carasfsd");
+    if(result){
+        printf("true \n");
+    }
+    else{
+        printf("false \n");
+    }
+    printf("execute worked\n");
+    NFA_free(car);
+    printf("nfa done");
+
+
+
 
 
     //DFA of exactly xzy
@@ -201,5 +209,6 @@ int main(int argc, char* args[]) {
 
     }
 
+    DFA_free(containingING);
 
 }

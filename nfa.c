@@ -26,9 +26,9 @@ NFA new_NFA(int nstates) {
     for(int i=0; i< sizeof(newNFA->acceptingStates)/nstates; i++){
         newNFA->acceptingStates[i]=false;
     }
-    newNFA->transition = (IntHashSet **) malloc(128 * sizeof(IntHashSet *));
+    newNFA->transition = (IntHashSet**) malloc(128*nstates*sizeof(IntHashSet*));
     for (int i = 0; i < 128; i++) {
-        newNFA->transition[i] = (IntHashSet *) malloc(nstates * sizeof(IntHashSet));
+        newNFA->transition[i] = (IntHashSet*) malloc(nstates*sizeof(IntHashSet));
     }
 
     for(int i=0; i<128; i++){
@@ -44,18 +44,18 @@ NFA new_NFA(int nstates) {
  */
 void NFA_free(NFA nfa){
 //freedom
-//    for(int i = 0; i<=128; i++){
-//        for(int j = 0; j<nfa->states; j++ ){
-//            IntHashSet_free(nfa->transition[i][j]);
-//        }
-//    }
-    for(int i=0; i<128; i++){
-        free(nfa->transition[i]);
+    printf("freeing\n");
+    for(int i = 0; i<=128; i++){
+        for(int j=0; j<nfa->states; j++)
+            IntHashSet_free(nfa->transition[i][j]);
     }
+    printf("free1");
+//    for(int i=0; i<128; i++){
+//        free(nfa->transition[i]);
+//    }
     free(nfa->transition);
-    nfa->transition = NULL;
+//    nfa->transition = NULL;
     free(nfa->acceptingStates);
-    nfa->acceptingStates = NULL;
     free(nfa);
 //    for (int i = 0; i < 128; i++)
 //    {
@@ -89,9 +89,9 @@ IntHashSet NFA_get_transitions(NFA nfa, int state, char sym){
  * state src on input symbol sym.
  */
 void NFA_add_transition(NFA nfa, int src, char sym, int dst){
-    printf("%s \n", IntHashSet_toString(nfa->transition[(int)sym][src]));
+    //printf("%s \n", IntHashSet_toString(nfa->transition[(int)sym][src]));
     IntHashSet_insert((nfa->transition[(int)sym][src]), dst);
-    printf("%s \n", IntHashSet_toString(nfa->transition[(int)sym][src]));
+    //printf("%s \n", IntHashSet_toString(nfa->transition[(int)sym][src]));
 }
 
 /**
@@ -134,7 +134,9 @@ bool NFA_execute(NFA nfa, char *input){
     IntHashSet possible = new_IntHashSet(nfa->states);
     IntHashSet_insert(possible, nfa->startState);
     possible = get_possible_states(nfa, input, possible);
+
     IntHashSetIterator it = IntHashSet_iterator(possible);
+
     while(IntHashSetIterator_hasNext(it)) {
         if (NFA_get_accepting(nfa, IntHashSetIterator_next(it))){
             IntHashSet_free(possible);
@@ -148,7 +150,7 @@ bool NFA_execute(NFA nfa, char *input){
 
 IntHashSet get_possible_states(NFA nfa, char* input, IntHashSet currentStates){
     if((input == NULL) || (input[0] == '\0')){
-        free(input);
+       // free(input);
         return currentStates;
     }
     IntHashSet possible = new_IntHashSet(nfa->states);
