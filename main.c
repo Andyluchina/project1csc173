@@ -158,8 +158,24 @@ int main(int argc, char* args[]) {
 
 
 
-    //testing NFA that is a interesting pattern pattern that contains ing
+    //testing   NFA that is a interesting pattern pattern that contains ing
+    NFA ipattern = new_NFA(5);
+    NFA_set_accepting(ipattern, 4, true);
+    NFA_add_transition_all(ipattern, 0, 0);
+    NFA_add_transition_all(ipattern, 1, 0);
+    NFA_add_transition_all(ipattern, 2, 0);
+    NFA_add_transition_all(ipattern, 3, 0);
+    NFA_add_transition_all(ipattern, 4, 4);
 
+    NFA_add_transition(ipattern, 0, 'i', 1);
+    NFA_add_transition(ipattern, 1, 'p', 2);
+    NFA_add_transition(ipattern, 2, 'a', 3);
+    NFA_add_transition(ipattern, 3, 't', 4);
+
+
+    printf("\n");
+    printf("\n");
+    NFA_free(ipattern);
 
 
 
