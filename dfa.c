@@ -127,7 +127,6 @@ void DFA_set_transition_all(DFA dfa, int src, int dst) {
 
 //debugged
 void DFA_set_accepting(DFA dfa, int state, bool value) {
-   // printf("fucking accept");
     dfa->acceptingStates[state] = value;
 //    printf("as: %d", dfa->acceptingStates[state]);
 }
@@ -138,6 +137,9 @@ void DFA_set_accepting(DFA dfa, int state, bool value) {
 
 //debugged
 bool DFA_get_accepting(DFA dfa, int state) {
+    if(state == -1){
+        return false;
+    }
     return dfa->acceptingStates[state];
 }
 
@@ -148,12 +150,11 @@ bool DFA_get_accepting(DFA dfa, int state) {
 
 bool DFA_execute(DFA dfa, char *input) {
     int state = dfa->startState;
-    for (int t = 0; t <(signed)strlen(input); t++) {
+    for (int t = 0; t < (signed) strlen(input)-1; t++) {
         if(state == -1)
         {
-           return false;
+            return false;
         }
-
         state = dfa->transition[(int)input[t]][state];
     }
     return DFA_get_accepting(dfa, state);
@@ -179,14 +180,7 @@ void DFA_print(DFA dfa)
         {
             if(dfa->transition[r][c] != -1)
             {
-                if(c == dfa->states){
-                    printf("%c transitions %d to %d\n", (char) r, c, c);
-
-                }else
-                    {
-                        printf("%c transitions %d to %d\n", (char) r, c, c + 1);
-
-                    }
+                printf("%c transitions %d to %d\n", (char) r, c, dfa->transition[r][c]);
             }
         }
     }

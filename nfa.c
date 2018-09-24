@@ -144,7 +144,6 @@ bool NFA_execute(NFA nfa, char *input){
 
 IntHashSet get_possible_states(NFA nfa, char* input, IntHashSet currentStates){
     if((input == NULL) || (input[0] == '\0')){
-       // free(input);
         return currentStates;
     }
     IntHashSet possible = new_IntHashSet(nfa->states);
@@ -165,10 +164,9 @@ IntHashSet get_possible_statesFromChar(NFA nfa, char input, IntHashSet currentSt
     while(IntHashSetIterator_hasNext(it)) {
         int character = (int) input;
         int state = IntHashSetIterator_next(it);
-        possible =  nfa->transition[character][state];
+        IntHashSet_union(possible, nfa->transition[character][state]);
     }
     free(it);
-    IntHashSet_free(currentStates);
     return possible;
 }
 
@@ -176,7 +174,7 @@ IntHashSet get_possible_statesFromChar(NFA nfa, char input, IntHashSet currentSt
  * Print the given NFA to System.out.
  */
 void NFA_print(NFA nfa){
-    printf("There are %d states in this NFA\n", nfa->states);
+    printf("There are %d states in this NFA (starting with state 0) \n", nfa->states);
     for(int i = 0; i < nfa->states; i++){
         if(nfa->acceptingStates[i])
             printf("%d is an accepting state\n", i);

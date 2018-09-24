@@ -17,7 +17,7 @@
  * @see FOCS Section 10.3
  * @see Comments for DFA in dfa.h
  */
-typedef struct NFA *NFA;
+typedef struct NFA* NFA;
 
 /**
  * Allocate and return a new NFA containing the given number of states.

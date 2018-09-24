@@ -2,7 +2,7 @@
 #include <string.h>
 #include "dfa.h"
 #include "nfa.h"
-
+#include "NFAtoDFA.h"
 
 DFA createXZY()
 {
@@ -11,7 +11,6 @@ DFA createXZY()
     DFA_set_transition(xzy, 0, 'x', 1);
     DFA_set_transition(xzy, 1, 'z', 2);
     DFA_set_transition(xzy, 2, 'y', 3);
-    DFA_print(xzy);
     return xzy;
 }
 
@@ -195,11 +194,11 @@ void nfaREPL(NFA nfa)
 {
     char input[256] = "";
     bool result;
-    printf("Enter an input (\"quit\" to quit): ");
-    fgets(input, 100, stdin);
-    input[strcspn(input, "\n")] = 0;
+
     while(strcmp(input, "quit") != 0)
     {
+        printf("Enter an input (\"quit\" to quit): ");
+        fgets(input, 100, stdin);
         if(strcmp(input, "quit") == 0)
         {
             break;
@@ -216,7 +215,6 @@ void nfaREPL(NFA nfa)
 
 
     }
-    NFA_free(nfa);
     printf("\n");
 }
 
@@ -258,7 +256,27 @@ int main(int argc, char* args[]) {
     NFA ipat = createIPattern();
     nfaREPL(ipat);
 
+    //3
+    printf("Testing DFA from NFA that recognizes strings ending in \"car\"\n");
+    DFA carDFA = NFAtoDFA(car);
+    printf("Number of states in the dfa: %d \n", DFA_get_size(carDFA));
+    dfaREPL(carDFA);
+
+    printf("Testing DFA from NFA that recognizes strings containing \"car\"\n");
+    DFA containCarDFA = NFAtoDFA(containCar);
+    printf("Number of states in the dfa: %d \n", DFA_get_size(containCarDFA));
+    dfaREPL(containCarDFA);
+
+    printf("Testing NFA from DFA that is not a partial anagram of washington\n");
+    DFA washingtonDFA = NFAtoDFA(washington);
+    printf("Number of states in the dfa: %d \n", DFA_get_size(washingtonDFA));
+    dfaREPL(washingtonDFA);
 
 
+
+    NFA_free(washington);
+    NFA_free(containCar);
+    NFA_free(car);
+    NFA_free(ipat);
 
 }
