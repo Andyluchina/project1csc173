@@ -158,7 +158,7 @@ int main(int argc, char* args[]) {
 
 
 
-    //testing   NFA that is a interesting pattern pattern that contains ing
+    //testing   NFA that is a interesting pattern pattern that contains ipat
     NFA ipattern = new_NFA(5);
     NFA_set_accepting(ipattern, 4, true);
     NFA_add_transition_all(ipattern, 0, 0);
@@ -172,6 +172,28 @@ int main(int argc, char* args[]) {
     NFA_add_transition(ipattern, 2, 'a', 3);
     NFA_add_transition(ipattern, 3, 't', 4);
 
+    input = "";
+    printf("Testing NFA that contains ipat--- interesting pattern\n");
+    while(strcmp(input, "quit") != 0)
+    {
+        printf("Enter an input (\"quit\" to quit): ");
+        fgets(input, 100, stdin);
+
+        if(strcmp(input, "quit") == 0)
+        {
+            break;
+        }
+        result = NFA_execute(ipattern, input);
+        input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
+        if(result)
+        {
+            printf("Result for input \"%s\": true\n", input);
+        }else
+        {
+            printf("Result for input \"%s\": false\n", input);
+        }
+
+    }
 
     printf("\n");
     printf("\n");
