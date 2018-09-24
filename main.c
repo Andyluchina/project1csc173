@@ -21,17 +21,16 @@ int main(int argc, char* args[]) {
     NFA_add_transition_all(car, 1, 0);
     NFA_add_transition_all(car, 2, 0);
     NFA_add_transition_all(car, 3, 0);
-    NFA_print(car);
+//    NFA_print(car);
 
     printf("Testing NFA that recognizes strings ending in \"car\"\n");
-    result = NFA_execute(car, "carasfsd");
+    result = NFA_execute(car, "car");
     if(result){
-        printf("true \n");
+        printf("accepted \n");
     }
     else{
-        printf("false \n");
+        printf("rejected \n");
     }
-    printf("execute worked\n");
     NFA_free(car);
     printf("nfa done");
 

@@ -26,9 +26,10 @@ NFA new_NFA(int nstates) {
     for(int i=0; i< sizeof(newNFA->acceptingStates)/nstates; i++){
         newNFA->acceptingStates[i]=false;
     }
-    newNFA->transition = (IntHashSet**) malloc(128*nstates*sizeof(IntHashSet*));
+
+    newNFA->transition = (IntHashSet**) malloc(128*sizeof(IntHashSet*));
     for (int i = 0; i < 128; i++) {
-        newNFA->transition[i] = (IntHashSet*) malloc(nstates*sizeof(IntHashSet));
+        newNFA->transition[i] = (IntHashSet*)malloc(nstates*sizeof(IntHashSet));
     }
 
     for(int i=0; i<128; i++){
@@ -43,24 +44,18 @@ NFA new_NFA(int nstates) {
  * Free the given NFA.
  */
 void NFA_free(NFA nfa){
-//freedom
-    printf("freeing\n");
-    for(int i = 0; i<=128; i++){
-        for(int j=0; j<nfa->states; j++)
-            IntHashSet_free(nfa->transition[i][j]);
+//freed
+    for (int i = 0; i < 128; i++)
+    {
+        free(nfa->transition[i]);
     }
     printf("free1");
-//    for(int i=0; i<128; i++){
-//        free(nfa->transition[i]);
-//    }
+
     free(nfa->transition);
 //    nfa->transition = NULL;
     free(nfa->acceptingStates);
     free(nfa);
-//    for (int i = 0; i < 128; i++)
-//    {
-//        free(dfa->transition[i]);
-//    }
+
 //    free(dfa->transition);
 //    dfa->transition = NULL;
 //    dfa->acceptingStates = NULL;

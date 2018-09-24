@@ -35,8 +35,6 @@ DFA new_DFA(int nstates) {
         }
     }
 
-
-
     return newDFA;
 }
 
