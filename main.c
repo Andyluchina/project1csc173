@@ -19,8 +19,6 @@ int main(int argc, char* args[]) {
     NFA_add_transition_all(car, 1, 0);
     NFA_add_transition_all(car, 2, 0);
     NFA_add_transition_all(car, 3, 0);
-    NFA_print(car);
-
     printf("Testing NFA that recognizes strings ending in \"car\"\n");
     result = NFA_execute(car, "car");
     if(result){
@@ -30,8 +28,90 @@ int main(int argc, char* args[]) {
         printf("rejected \n");
     }
 
-    printf("nfa done");
 
+
+
+//NFA containing car
+    NFA containCar = new_NFA(4);
+    NFA_set_accepting(containCar, 3, true);
+    NFA_add_transition_all(containCar, 0, 0);
+    NFA_add_transition_all(containCar, 1, 0);
+    NFA_add_transition_all(containCar, 2, 0);
+    NFA_add_transition_all(containCar, 3, 3);
+    NFA_add_transition(containCar, 0, 'c', 1);
+    NFA_add_transition(containCar, 1, 'a', 2);
+    NFA_add_transition(containCar, 2, 'r', 3);
+
+    printf("Testing NFA that recognizes strings containing \"car\"\n");
+    result = NFA_execute(containCar, "cadarcafar");
+    if(result){
+        printf("accepted \n");
+    }
+    else{
+        printf("rejected \n");
+    }
+
+
+    //testing NFA that is an anagram of washington
+    NFA washington = new_NFA(20);
+    NFA_set_accepting(washington, 2, true);
+    NFA_set_accepting(washington, 4, true);
+    NFA_set_accepting(washington, 6, true);
+    NFA_set_accepting(washington, 8, true);
+    NFA_set_accepting(washington, 11, true);
+    NFA_set_accepting(washington, 13, true);
+    NFA_set_accepting(washington, 15, true);
+    NFA_set_accepting(washington, 17, true);
+    NFA_set_accepting(washington, 19, true);
+
+    NFA_add_transition_all(washington, 0, 0);
+
+    NFA_add_transition(washington, 0, 'a', 1);
+    NFA_add_transition(washington, 0, 'g', 3);
+    NFA_add_transition(washington, 0, 'h', 5);
+    NFA_add_transition(washington, 0, 'i', 7);
+    NFA_add_transition(washington, 0, 'n', 9);
+    NFA_add_transition(washington, 0, 'n', 12);
+    NFA_add_transition(washington, 0, 'o', 14);
+    NFA_add_transition(washington, 0, 's', 16);
+    NFA_add_transition(washington, 0, 't', 18);
+
+    NFA_add_transition(washington, 1, 'a', 2);
+    NFA_add_transition(washington, 3, 'g', 4);
+    NFA_add_transition(washington, 5, 'h', 6);
+    NFA_add_transition(washington, 7, 'i', 8);
+    NFA_add_transition(washington, 9, 'n', 10);
+    NFA_add_transition(washington, 10, 'n', 11);
+    NFA_add_transition(washington, 12, 'o', 13);
+    NFA_add_transition(washington, 14, 's', 15);
+    NFA_add_transition(washington, 16, 't', 17);
+    NFA_add_transition(washington, 18, 'w', 19);
+
+    int arr[] = {1, 3, 5, 7, 9, 10, 12, 14, 16, 18};
+    int length = 10;
+    char arrchar[] = {'a', 'g', 'h', 'i', 'n', 'n', 'o', 's', 't', 'w'};
+
+    for(int i=0; i< length; i++){
+        for(int j=0; j<128; j++){
+            if((int)arrchar[i]!=j){
+                NFA_add_transition(washington, arr[i], (char)j, arr[i]);
+            }
+        }
+    }
+
+    printf("Testing NFA that recognizes washington thing \n");
+    result = NFA_execute(washington, "fwafdwafaewqrwa");
+    if(result){
+        printf("washington accepted \n");
+    }
+    else{
+        printf("washington rejected \n");
+    }
+
+
+
+
+    //testing NFA that is a interesting pattern pattern that contains ing
 
 
 
