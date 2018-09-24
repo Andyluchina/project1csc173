@@ -23,7 +23,7 @@ NFA new_NFA(int nstates) {
     newNFA->startState = 0; //was equal to 0
     newNFA->states = nstates;
     newNFA->acceptingStates = (bool*) calloc((size_t) nstates, sizeof(bool)); //I have no clue what (size_t) is but clion said to use it for signed values of type in
-    for(int i=0; i< sizeof(newNFA->acceptingStates)/nstates; i++){
+    for(int i=0; i < (signed) sizeof(newNFA->acceptingStates)/nstates; i++){
         newNFA->acceptingStates[i]=false;
     }
 
@@ -49,7 +49,6 @@ void NFA_free(NFA nfa){
     {
         free(nfa->transition[i]);
     }
-    printf("free1");
 
     free(nfa->transition);
 //    nfa->transition = NULL;
@@ -93,7 +92,7 @@ void NFA_add_transition(NFA nfa, int src, char sym, int dst){
  * Add a transition for the given NFA for each symbol in the given str.
  */
 void NFA_add_transition_str(NFA nfa, int src, char *str, int dst){
-    for(int i=0; i<strlen(str); i++){
+    for(int i=0; i < (signed) strlen(str); i++){
         NFA_add_transition(nfa, src, str[i], dst);
     }
 }
