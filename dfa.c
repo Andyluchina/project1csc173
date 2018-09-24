@@ -148,7 +148,7 @@ bool DFA_get_accepting(DFA dfa, int state) {
 
 bool DFA_execute(DFA dfa, char *input) {
     int state = dfa->startState;
-    for (int t = 0; t < (signed) strlen(input); t++) {
+    for (int t = 0; t <(signed)strlen(input); t++) {
         if(state == -1)
         {
            return false;

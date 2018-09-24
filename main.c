@@ -4,11 +4,71 @@
 #include "nfa.h"
 
 
-int main(int argc, char* args[]) {
-    char* input = "";
-    bool result;
+DFA createXZY()
+{
+    DFA xzy = new_DFA(4);
+    DFA_set_accepting(xzy, 3, 1);
+    DFA_set_transition(xzy, 0, 'x', 1);
+    DFA_set_transition(xzy, 1, 'z', 2);
+    DFA_set_transition(xzy, 2, 'y', 3);
+    DFA_print(xzy);
+    return xzy;
+}
 
-//    NFA ending with "car"
+DFA createABC()
+{
+    DFA startingWithabc = new_DFA(4);
+    DFA_set_transition(startingWithabc, 0, 'a', 1);
+    DFA_set_transition(startingWithabc, 1, 'b', 2);
+    DFA_set_transition(startingWithabc, 2, 'c', 3);
+    DFA_set_transition_all(startingWithabc, 3, 3);
+    DFA_set_accepting(startingWithabc, 3, 1);
+    return startingWithabc;
+}
+
+DFA createOddZeros()
+{
+    DFA oddZeros = new_DFA(2);
+    DFA_set_transition(oddZeros, 0, '0', 1);
+    DFA_set_transition(oddZeros, 0, '1', 0);
+    DFA_set_transition(oddZeros, 1, '0', 0);
+    DFA_set_transition(oddZeros, 1, '1', 1);
+    DFA_set_accepting(oddZeros, 1, 1);
+    return oddZeros;
+}
+
+DFA createOddZerosAndOnes()
+{
+    DFA oddZerosAndOnes = new_DFA(5);
+    DFA_set_transition(oddZerosAndOnes, 0, '1', 1);
+    DFA_set_transition(oddZerosAndOnes, 1, '1', 0);
+    DFA_set_transition(oddZerosAndOnes, 1, '0', 3);
+    DFA_set_transition(oddZerosAndOnes, 3, '0', 1);
+    DFA_set_transition(oddZerosAndOnes, 0, '0', 2);
+    DFA_set_transition(oddZerosAndOnes, 2, '0', 0);
+    DFA_set_transition(oddZerosAndOnes, 2, '1', 4);
+    DFA_set_transition(oddZerosAndOnes, 4, '1', 2);
+    DFA_set_transition(oddZerosAndOnes, 4, '0', 1);
+    DFA_set_transition(oddZerosAndOnes, 3, '1', 2);
+    DFA_set_accepting(oddZerosAndOnes, 3, 1);
+    DFA_set_accepting(oddZerosAndOnes, 4, 1);
+    return oddZerosAndOnes;
+}
+
+DFA createING()
+{
+    DFA containingING = new_DFA(4);
+    DFA_set_accepting(containingING, 3, 1);
+    DFA_set_transition_all(containingING, 0, 0);
+    DFA_set_transition(containingING, 0, 'i', 1);
+    DFA_set_transition(containingING, 1, 'n', 2);
+    DFA_set_transition(containingING, 2, 'g', 3);
+    DFA_set_transition_all(containingING, 3, 3);
+    return containingING;
+}
+
+NFA createEndingcar()
+{
     NFA car = new_NFA(4);
     NFA_set_accepting(car, 3, true);
     NFA_add_transition(car, 0, 'c', 1);
@@ -19,33 +79,11 @@ int main(int argc, char* args[]) {
     NFA_add_transition_all(car, 1, 0);
     NFA_add_transition_all(car, 2, 0);
     NFA_add_transition_all(car, 3, 0);
-    printf("Testing NFA that recognizes strings ending in \"car\"\n");
-    while(strcmp(input, "quit") != 0)
-    {
-        printf("Enter an input (\"quit\" to quit): ");
-        fgets(input, 100, stdin);
+    return car;
+}
 
-        if(strcmp(input, "quit") == 0)
-        {
-            break;
-        }
-        input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
-        result = NFA_execute(car, input);
-        if(result)
-        {
-            printf("Result for input \"%s\": true\n", input);
-        }else
-        {
-            printf("Result for input \"%s\": false\n", input);
-        }
-
-    }
-    printf("\n");
-    printf("\n");
-    NFA_free(car);
-
-
-//NFA containing car
+NFA createContainingcar()
+{
     NFA containCar = new_NFA(4);
     NFA_set_accepting(containCar, 3, true);
     NFA_add_transition_all(containCar, 0, 0);
@@ -55,34 +93,11 @@ int main(int argc, char* args[]) {
     NFA_add_transition(containCar, 0, 'c', 1);
     NFA_add_transition(containCar, 1, 'a', 2);
     NFA_add_transition(containCar, 2, 'r', 3);
+    return containCar;
+}
 
-    printf("Testing NFA that recognizes strings containing \"car\"\n");
-    input = "";
-    while(strcmp(input, "quit") != 0)
-    {
-        printf("Enter an input (\"quit\" to quit): ");
-        fgets(input, 100, stdin);
-
-        if(strcmp(input, "quit") == 0)
-        {
-            break;
-        }
-        result = NFA_execute(containCar, input);
-        input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
-        if(result)
-        {
-            printf("Result for input \"%s\": true\n", input);
-        }else
-        {
-            printf("Result for input \"%s\": false\n", input);
-        }
-
-    }
-    printf("\n");
-    printf("\n");
-    NFA_free(containCar);
-
-    //testing NFA that is an anagram of washington
+NFA createWashington()
+{
     NFA washington = new_NFA(20);
     NFA_set_accepting(washington, 2, true);
     NFA_set_accepting(washington, 4, true);
@@ -128,37 +143,10 @@ int main(int argc, char* args[]) {
             }
         }
     }
+    return washington;
+}
 
-    input = "";
-    printf("Testing NFA that is not a partial anagram of washington\n");
-    while(strcmp(input, "quit") != 0)
-    {
-        printf("Enter an input (\"quit\" to quit): ");
-        fgets(input, 100, stdin);
-
-        if(strcmp(input, "quit") == 0)
-        {
-            break;
-        }
-        result = NFA_execute(washington, input);
-        input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
-        if(result)
-        {
-            printf("Result for input \"%s\": true\n", input);
-        }else
-        {
-            printf("Result for input \"%s\": false\n", input);
-        }
-
-    }
-
-    NFA_free(washington);
-
-
-
-
-
-    //testing   NFA that is a interesting pattern pattern that contains ipat
+NFA createIPattern(){
     NFA ipattern = new_NFA(5);
     NFA_set_accepting(ipattern, 4, true);
     NFA_add_transition_all(ipattern, 0, 0);
@@ -171,54 +159,52 @@ int main(int argc, char* args[]) {
     NFA_add_transition(ipattern, 1, 'p', 2);
     NFA_add_transition(ipattern, 2, 'a', 3);
     NFA_add_transition(ipattern, 3, 't', 4);
+    return ipattern;
+}
+//testing   NFA that is a interesting pattern pattern that contains ipat
 
-    input = "";
-    printf("Testing NFA that contains ipat--- interesting pattern\n");
-    while(strcmp(input, "quit") != 0)
-    {
+
+void dfaREPL(DFA dfa) {
+    bool result;
+    char input[256] = "";
+
+
+    while (strcmp(input, "quit") != 0) {
         printf("Enter an input (\"quit\" to quit): ");
-        fgets(input, 100, stdin);
-
-        if(strcmp(input, "quit") == 0)
-        {
+        fgets(input, sizeof(input), stdin);
+        if (strcmp(input, "quit") == 0) {
             break;
         }
-        result = NFA_execute(ipattern, input);
+        result = DFA_execute(dfa, input);
         input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
-        if(result)
-        {
+        if (result) {
             printf("Result for input \"%s\": true\n", input);
-        }else
-        {
+        } else {
             printf("Result for input \"%s\": false\n", input);
         }
 
+
     }
-
+    DFA_free(dfa);
     printf("\n");
-    printf("\n");
-    NFA_free(ipattern);
-
-
 
     //DFA of exactly xzy
-    DFA xzy = new_DFA(4);
-    DFA_set_accepting(xzy, 3, 1);
-    DFA_set_transition(xzy, 0, 'x', 1);
-    DFA_set_transition(xzy, 1, 'z', 2);
-    DFA_set_transition(xzy, 2, 'y', 3);
-    printf("Testing DFA that recognizes exactly \"xzy\"\n");
+}
 
+void nfaREPL(NFA nfa)
+{
+    char input[256] = "";
+    bool result;
+    printf("Enter an input (\"quit\" to quit): ");
+    fgets(input, 100, stdin);
+    input[strcspn(input, "\n")] = 0;
     while(strcmp(input, "quit") != 0)
     {
-        printf("Enter an input (\"quit\" to quit): ");
-        fgets(input, 100, stdin);
-
         if(strcmp(input, "quit") == 0)
         {
             break;
         }
-        result = DFA_execute(xzy, input);
+        result = NFA_execute(nfa, input);
         input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
         if(result)
         {
@@ -228,148 +214,50 @@ int main(int argc, char* args[]) {
             printf("Result for input \"%s\": false\n", input);
         }
 
+
     }
-    DFA_free(xzy);
+    NFA_free(nfa);
     printf("\n");
-    printf("\n");
+}
 
-    //DFA of any string starting with abc
-    DFA startingWithabc = new_DFA(4);
-    DFA_set_transition(startingWithabc, 0, 'a', 1);
-    DFA_set_transition(startingWithabc, 1, 'b', 2);
-    DFA_set_transition(startingWithabc, 2, 'c', 3);
-    DFA_set_transition_all(startingWithabc, 3, 3);
-    DFA_set_accepting(startingWithabc, 3, 1);
-
-    input = "";
+int main(int argc, char* args[]) {
+    // 1a
+    printf("Testing DFA that recognizes exactly the string \"xzy\"\n");
+    DFA xzy = createXZY();
+    dfaREPL(xzy);
+    //1b
     printf("Testing DFA that recognizes any string that starts with the characters \"abc\"\n");
-    while(strcmp(input, "quit") != 0)
-    {
-        printf("Enter an input (\"quit\" to quit): ");
-        fgets(input, 100, stdin);
-
-        if(strcmp(input, "quit") == 0)
-        {
-            break;
-        }
-        result = DFA_execute(startingWithabc, input);
-        input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
-        if(result)
-        {
-            printf("Result for input \"%s\": true\n", input);
-        }else
-        {
-            printf("Result for input \"%s\": false\n", input);
-        }
-
-    }
-    DFA_free(startingWithabc);
-    printf("\n");
-    printf("\n");
-
-    //DFA of binary input with an odd number of 0's
-    DFA oddZeros = new_DFA(2);
-    DFA_set_transition(oddZeros, 0, '0', 1);
-    DFA_set_transition(oddZeros, 0, '1', 0);
-    DFA_set_transition(oddZeros, 1, '0', 0);
-    DFA_set_transition(oddZeros, 1, '1', 1);
-    DFA_set_accepting(oddZeros, 1, 1);
-    input = "";
+    DFA startingWithabc = createABC();
+    dfaREPL(startingWithabc);
+    //1c
     printf("Testing DFA that recognizes binary input with an odd number of 0's\n");
-    while(strcmp(input, "quit") != 0)
-    {
-        printf("Enter an input (\"quit\" to quit): ");
-        fgets(input, 100, stdin);
-
-        if(strcmp(input, "quit") == 0)
-        {
-            break;
-        }
-        result = DFA_execute(oddZeros, input);
-        input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
-        if(result)
-        {
-            printf("Result for input \"%s\": true\n", input);
-        }else
-        {
-            printf("Result for input \"%s\": false\n", input);
-        }
-
-    }
-    DFA_free(oddZeros);
-    printf("\n");
-    printf("\n");
-    //DFA of binary input with an odd number of 0's and 1's
-    DFA oddZerosAndOnes = new_DFA(5);
-    DFA_set_transition(oddZerosAndOnes, 0, '1', 1);
-    DFA_set_transition(oddZerosAndOnes, 1, '1', 0);
-    DFA_set_transition(oddZerosAndOnes, 1, '0', 3);
-    DFA_set_transition(oddZerosAndOnes, 3, '0', 1);
-    DFA_set_transition(oddZerosAndOnes, 0, '0', 2);
-    DFA_set_transition(oddZerosAndOnes, 2, '0', 0);
-    DFA_set_transition(oddZerosAndOnes, 2, '1', 4);
-    DFA_set_transition(oddZerosAndOnes, 4, '1', 2);
-    DFA_set_transition(oddZerosAndOnes, 4, '0', 1);
-    DFA_set_transition(oddZerosAndOnes, 3, '1', 2);
-    DFA_set_accepting(oddZerosAndOnes, 3, 1);
-    DFA_set_accepting(oddZerosAndOnes, 4, 1);
-    input = "";
+    DFA oddZeros = createOddZeros();
+    dfaREPL(oddZeros);
+    //1d
     printf("Testing DFA that recognizes binary input with an odd number of both 0's and 1's\n");
-    while(strcmp(input, "quit") != 0)
-    {
-        printf("Enter an input (\"quit\" to quit): ");
-        fgets(input, 100, stdin);
-
-        if(strcmp(input, "quit") == 0)
-        {
-            break;
-        }
-        result = DFA_execute(oddZerosAndOnes, input);
-        input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
-        if(result)
-        {
-            printf("Result for input \"%s\": true\n", input);
-        }else
-        {
-            printf("Result for input \"%s\": false\n", input);
-        }
-
-    }
-    DFA_free(oddZerosAndOnes);
-
-    //DFA containing the string "ing"
-    DFA containingING = new_DFA(4);
-    DFA_set_accepting(containingING, 3, 1);
-    DFA_set_transition_all(containingING, 0, 0);
-    DFA_set_transition(containingING, 0, 'i', 1);
-    DFA_set_transition(containingING, 1, 'n', 2);
-    DFA_set_transition(containingING, 2, 'g', 3);
-    DFA_set_transition_all(containingING, 3, 3);
-    input = "";
-    printf("\n");
-    printf("\n");
+    DFA oddZerosAndOnes = createOddZerosAndOnes();
+    dfaREPL(oddZerosAndOnes);
+    //1e
     printf("Testing DFA that recognizes any string that contains \"ing\"\n");
-    while(strcmp(input, "quit") != 0)
-    {
-        printf("Enter an input (\"quit\" to quit): ");
-        fgets(input, 100, stdin);
+    DFA containingING = createING();
+    dfaREPL(containingING);
+    //2a
+    printf("Testing NFA that recognizes strings ending in \"car\"\n");
+    NFA car = createEndingcar();
+    nfaREPL(car);
+    //2b
+    printf("Testing NFA that recognizes strings containing \"car\"\n");
+    NFA containCar = createContainingcar();
+    nfaREPL(containCar);
+    //2c
+    printf("Testing NFA that is not a partial anagram of washington\n");
+    NFA washington = createWashington();
+    nfaREPL(washington);
+    //2d
+    printf("Testing NFA that contains the string \"ipat\"\n");
+    NFA ipat = createIPattern();
+    nfaREPL(ipat);
 
-        if(strcmp(input, "quit") == 0)
-        {
-            break;
-        }
-        result = DFA_execute(containingING, input);
-        input[strcspn(input, "\n")] = 0; //removes the new line for when we print out input
-        if(result)
-        {
-            printf("Result for input \"%s\": true\n", input);
-        }else
-        {
-            printf("Result for input \"%s\": false\n", input);
-        }
-
-    }
-    DFA_free(containingING);
 
 
 
